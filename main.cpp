@@ -1,26 +1,123 @@
 #include <iostream>
+#include <cassert>
 #include "List.h"
 
-int main (int argc, char** argv) {
-    List test;
-    test.push_back(1);
-    test.push_back(2);
-    test.push_back(3);
-    test.push_back(4);
-    test.push_back(5);
+void test1(){
+    List a;
+    assert(a.empty() == true);
+    assert(a.size() == 0);
 
-    Iterator pos;
-    pos = test.begin();
-    pos.next();
-    pos.next();
-    pos.next();
-    pos.next();
+    Iterator it = a.begin();
+    Iterator end = a.end();
 
-    test.insert(pos, 5);
-    test.erase(pos);
+    assert(it == end);
+    assert(it.operator==(end));
 
-    for (pos = test.begin(); !pos.equals(test.end()); pos.next()) {
-        std::cout << pos.get() << std::endl;
-    }
-    return 0;
+    a.push_back(3);
+
+    assert(a.empty() == false);
+    assert(a.size() == 1);
+}
+
+void test2(){
+    List a;
+    a.push_back(1);
+    a.push_back(2);
+
+    assert(a.empty() == false);
+    assert(a.size() == 2);
+
+    a.push_back(3);
+    a.push_back(4);
+    a.push_front(0);
+
+    assert(a.size() == 5);
+}
+
+void test3(){
+    List a;
+    Iterator it = a.begin();
+    Iterator end = a.end();
+    assert(it == end);
+
+    a.push_back(1);
+    a.push_back(2);
+    a.push_back(3);
+    it = a.begin();
+    assert(*it == 1);
+    ++it;
+    assert(*it == 2);
+    ++it;
+    assert(*it == 3);
+}
+
+//testing pop_back()
+void pop_back(){
+    List a;
+    Iterator it = a.begin();
+    Iterator end = a.end();
+    assert(it.operator == (end));
+
+    a.push_back(2);
+    a.push_front(3);
+    a.push_back(1);
+    a.push_back(0);
+    assert(a.size() == 4);
+
+    a.pop_back();
+    a.pop_front();
+    a.pop_back();
+    assert(a.size() == 1);
+    it = a.begin();
+    assert(*it == 2);
+}
+
+void erase(){
+    List a;
+    Iterator it = a.begin();
+    Iterator end = a.end();
+
+    a.push_back(0);
+    it = a.begin();
+    it = a.erase(it);
+
+    a.push_back(1);
+    a.push_back(2);
+    a.push_back(3);
+    it = a.begin();
+    assert(*it == 1);
+    ++it;
+    it = a.erase(it);
+    assert(*it == 3);
+    assert(a.size() == 2);
+}
+
+//testing Iterator insert
+void insert(){
+    List a;
+    Iterator it = a.begin();
+    Iterator end = a.end();
+
+    it = a.insert(it, 1);
+    assert(*it == 1);
+    ++it;
+
+    it = a.insert(it, 2);
+    assert(*it == 2);
+    assert(a.size() == 2);
+}
+
+int main(int argc, char * args[]) {
+    test1();
+    std::cout << "Test 1 passed" << std::endl;
+    test2();
+    std::cout << "Test 2 passed" << std::endl;
+    test3();
+    std::cout << "Test 3 passed" << std::endl;
+    pop_back();
+    std::cout << "Test popback passed" << std::endl;
+    erase();
+    std::cout << "Test erase passed" << std::endl;
+    insert();
+    std::cout << "All Tests Passed" << std::endl;
 }

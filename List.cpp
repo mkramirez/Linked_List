@@ -1,77 +1,122 @@
 #include "List.h"
+#include <cassert>
 
-List::List() {
-    first = nullptr;
-    last = nullptr;
+List::~List(){
+    Link* temp;
+    while(head != nullptr){
+        temp = head->next;
+        delete head;
+        head = temp;
+    }
 }
 
-void List::push_back(int data) {
-    Node* new_node = new Node(data);
-    if (last == nullptr) {
-        first = new_node;
-        last = new_node;
+bool List::empty() const{
+    if (head == nullptr)
+        return true;
+    else
+        return false;
+}
+
+void List::push_back(int data){
+    Link *temp = new Link(data);
+    if (head == nullptr){
+        head = temp;
+        tail = temp;
     }
     else {
-        new_node->previous = last;
-        last->next = new_node;
-        last = new_node;
+        tail->next = temp;
+        tail = temp;
     }
 }
 
-void List::insert(Iterator iter, int s) {
-    if (iter.position == nullptr) {
-        push_back(s);
+void List::push_front(int data){
+    Link* temp = new Link(data);
+    if (head == nullptr){
+        head = temp;
+        tail = temp;
+    }
+    else {
+        temp->next = head;
+        head = temp;
+    }
+}
+
+int List::size(){
+    int count = 0;
+    Link* temp = head;
+    while (temp != nullptr){
+        ++count;
+        temp = temp->next;
+    }
+    delete temp;
+    return count;
+}
+
+void List::pop_back(){
+    assert(head != nullptr);
+    if (head->next == nullptr){
+        delete head;
+        head = nullptr;
         return;
     }
-
-    Node* after = iter.position;
-    Node* before = after->previous;
-    Node* new_node = new Node(s);
-    new_node->previous = before;
-    new_node->next = after;
-    after->previous = new_node;
-    if (before == nullptr) {
-        first = new_node;
+    Link* temp = head;
+    while (temp->next != tail){
+        temp = temp->next;
     }
-    else {
-        before->next = new_node;
-    }
+    tail = temp;
+    tail->next = nullptr;
+    delete temp->next;
 }
 
-Iterator List::erase(Iterator iter) {
-    assert (iter.position != nullptr);
-    Node* remove = iter.position;
-    Node* before = remove->previous;
-    Node* after = remove->next;
-    if (remove == first) {
-        first = after;
-    }
-    else {
-        before->next = after;
-    }
-    if (remove == last) {
-        last = before;
-    }
-    else {
-        after->previous = before;
-    }
-    delete remove;
-    Iterator r;
-    r.position = after;
-    r.container = this;
-    return r;
+void List::pop_front(){
+    Link* temp = head;
+    head = head->next;
+    delete temp;
+}
+Iterator List::begin(){
+    return Iterator(head);
 }
 
-Iterator List::begin() {
-    Iterator iter;
-    iter.position = first;
-    iter.container = this;
-    return iter;
+Iterator List::end(){
+    return Iterator(nullptr);
 }
 
-Iterator List::end() {
-    Iterator iter;
-    iter.position = nullptr;
-    iter.container = this;
-    return iter;
+Iterator List::insert(Iterator it, int data){
+    Link* temp1 = it.link;
+
+    if (temp1 == nullptr) {
+        push_back(data);
+        return Iterator(tail);
+    }
+
+    Link* temp2 = new Link(data);
+    Link* temp3 = temp1->next;
+
+    temp1->next = temp2;
+    temp2->next = temp3;
+
+    int currData = temp1->data;
+    temp1->data = temp2->data;
+    temp2->data = currData;
+
+    return it;
+}
+
+Iterator List::erase(Iterator it){
+    Link* temp1 = it.link;
+
+    if (temp1->next == nullptr){
+        pop_front();
+        return Iterator(head);
+    }
+
+    Link* temp2 = temp1->next;
+    int currData = temp1->data;
+    temp1->data = temp2->data;
+    temp2->data = currData;
+
+    Link* temp3 = temp1->next->next;
+    temp1->next = temp3;
+    delete temp2;
+    return it;
 }

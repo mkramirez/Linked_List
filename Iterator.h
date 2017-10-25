@@ -1,22 +1,14 @@
 #pragma once
-#include <string>
-#include <iostream>
-#include <cassert>
-
-#include "List.h"
-#include "Node.h"
-
-class List;
-class Node;
+#include "Link.h"
 
 class Iterator {
 public:
-    Iterator();
-    int get() const;
-    void next();
-    void previous();
-    bool equals(Iterator b) const;
+    int& operator*() const;
+    void operator++();
+    bool operator== (const Iterator& rhs);
 
-    Node* position;
-    List* container;
+private:
+    Iterator(Link* link) : link(link) {}
+    Link* link;
+    friend class List;
 };

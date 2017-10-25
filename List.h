@@ -1,23 +1,25 @@
 #pragma once
-#include <string>
-#include <iostream>
-#include <cassert>
-
-#include "Node.h"
 #include "Iterator.h"
-
-class Node;
-class Iterator;
 
 class List {
 public:
-    List();
+    List() {
+        head = nullptr;
+        tail = nullptr;
+    }
+    ~List();
+    bool empty() const;
     void push_back(int data);
-    void insert(Iterator iter, int s);
-    Iterator erase(Iterator iter);
+    void push_front(int data);
+    int size();
+    void pop_front();
+    void pop_back();
     Iterator begin();
     Iterator end();
-
-    Node* first;
-    Node* last;
+    Iterator insert(Iterator it, int data);
+    Iterator erase(Iterator it);
+private:
+    Link* head;
+    Link* tail;
+    int count;
 };
