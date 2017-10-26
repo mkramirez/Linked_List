@@ -4,7 +4,7 @@
 
 void test1(){
     List a;
-    assert(a.empty() == true);
+    assert(a.empty());
     assert(a.size() == 0);
 
     Iterator it = a.begin();
@@ -15,7 +15,7 @@ void test1(){
 
     a.push_back(3);
 
-    assert(a.empty() == false);
+    assert(!a.empty());
     assert(a.size() == 1);
 }
 
@@ -24,7 +24,7 @@ void test2(){
     a.push_back(1);
     a.push_back(2);
 
-    assert(a.empty() == false);
+    assert(!a.empty());
     assert(a.size() == 2);
 
     a.push_back(3);
@@ -51,7 +51,6 @@ void test3(){
     assert(*it == 3);
 }
 
-//testing pop_back()
 void pop_back(){
     List a;
     Iterator it = a.begin();
@@ -72,7 +71,7 @@ void pop_back(){
     assert(*it == 2);
 }
 
-void erase(){
+int erase(){
     List a;
     Iterator it = a.begin();
     Iterator end = a.end();
@@ -90,9 +89,9 @@ void erase(){
     it = a.erase(it);
     assert(*it == 3);
     assert(a.size() == 2);
+    return 0;
 }
 
-//testing Iterator insert
 void insert(){
     List a;
     Iterator it = a.begin();
