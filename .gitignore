@@ -85,4 +85,4 @@ CTestTestfile.cmake
 *.app
 
 .idea/
-
+CMakeLists.txt

@@ -11,10 +11,7 @@ List::~List(){
 }
 
 bool List::empty() const{
-    if (head == nullptr)
-        return true;
-    else
-        return false;
+    return head == nullptr;
 }
 
 void List::push_back(int data){
